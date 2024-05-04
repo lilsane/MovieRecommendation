@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MovieWiser</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Proper placement of style tag -->
+    
+</head>
+<body class="font-sans bg-gradient-to-r from-black to-red-800 text-white">
+    <nav class="py-4 px-6 w-full flex justify-between items-center bg-blue-900 bg-opacity-75">
+        <h1 class="text-3xl font-bold text-white">MovieWiser</h1>
+        <div class="flex items-center">
+            {% if session.get('username') %}
+                <div class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
+                    {{ session.get('username')[0] | upper }}
+                </div>
+                <a href="{{ url_for('logout') }}" class="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded ml-4">
+                    Logout
+                </a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="text-white">Login</a>
+                <a href="{{ url_for('signup') }}" class="text-white ml-4">Sign Up</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="flex flex-col items-center justify-center mt-10">
+        <h2 class="text-4xl font-bold mb-6">What's your movie mood?</h2>
+        <form action="/search" method="get" class="w-full max-w-sm">
+            <div class="flex items-center border-b border-teal-500 py-2">
+                <input type="text" name="mood" placeholder="Enter your mood..." class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none">
+                <button class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded" type="submit">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div>
+        <p class="text-center text-lg py-2">No ideas? Choose some suggestions</p>
+    </div><br><br>
+
+    {% for genre_name, movies in movies_by_genre.items() %}
+<div class="w-full max-w-6xl mx-auto px-4 mb-10">
+    <h2 class="text-3xl font-bold mb-6 text-center fade-in">{{ genre_name }}</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
+        {% for movie in movies %}
+        <div class="text-center mb-4 transition duration-300 ease-in-out transform hover:scale-105 relative group">
+            <!-- The anchor tag wrapping the image -->
+            <a href="{{ url_for('get_movie_info', movie_title=movie['title'] | replace(' ', '-')) }}" class="block">
+                <h3 class="text-xl font-semibold py-2">{{ movie['title'] }}</h3>
+                <img src="{{ movie['poster'] if movie['poster'] else url_for('static', filename='default_poster.jpg') }}" alt="Poster for {{ movie['title'] }}" class="w-full h-auto rounded-lg">
+            </a>
+            
+            <div class="absolute inset-0 bg-black bg-opacity-75 opacity-0 group-hover:opacity-100 flex items-center justify-center px-4 py-4 text-sm text-white transition-opacity duration-300 overflow-hidden">
+                {{ movie['overview'] }}
+            </div>
+            <!-- Rating form -->
+            <form action="{{ url_for('rate_movie', movie_title=movie['title'] | replace(' ', '-')) }}" method="post" class="absolute bottom-0 left-0 right-0 pb-4 pt-2 px-4 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="flex justify-center">
+                    <select name="rating" class="bg-gray-800 text-white rounded border border-gray-700 p-1">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded ml-2">Rate</button>
+                </div>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endfor %}
+
+</body> 
+</html>

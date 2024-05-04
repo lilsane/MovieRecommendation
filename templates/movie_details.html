@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ movie_data['Title'] }}</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+
+<!-- Movie Details Section -->
+<div class="container mx-auto px-4 py-10">
+    <div class="py-8">
+        <div class="max-w-4xl mx-auto bg-gray-800 p-5 rounded-lg shadow-lg">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Poster Section -->
+                <div class="flex justify-center lg:justify-start">
+                    <img src="{{ movie_data['Poster'] }}" alt="{{ movie_data['Title'] }} Poster" class="w-full lg:w-1/2 rounded-lg shadow-lg">
+                </div>
+                <!-- Movie Info Section -->
+                <div class="mt-4 lg:mt-0">
+                    <h1 class="text-4xl font-bold">{{ movie_data['Title'] }}</h1>
+                    <p class="mt-2"><strong>Director:</strong> {{ movie_data['Director'] }}</p>
+                    <p class="mt-2"><strong>Cast:</strong> {{ movie_data['Actors'] }}</p>
+                    <p class="mt-2"><strong>Genre:</strong> {{ movie_data['Genre'] }}</p>
+                    <p class="mt-2"><strong>Released:</strong> {{ movie_data['Released'] }}</p>
+                    <p class="mt-2"><strong>Runtime:</strong> {{ movie_data['Runtime'] }}</p>
+                    <p class="mt-2"><strong>Plot:</strong> {{ movie_data['Plot'] }}</p>
+                    <p class="mt-2"><strong>Rating:</strong> {{ movie_data['imdbRating'] }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
